@@ -20,24 +20,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-#      - name: 📦 Gradle keşini aktiv et
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-
       - name: 🚀 Testləri işə sal
-        run: ./gradlew test
-
-#      - name: 📊 Test hesabatını saxla
-#        uses: actions/upload-artifact@v4
-#        if: always()
-#        with:
-#          name: test-hesabati-${{ github.run_number }}
-#          path: build/reports/tests/
-#          retention-days: 14
+        run: sh ./gradlew test
