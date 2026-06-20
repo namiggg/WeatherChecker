@@ -12,18 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Kodu yüklə
       - name: 📥 Kodu yüklə (Checkout)
         uses: actions/checkout@v4
 
-      # 2. JDK 17 quraşdır
       - name: ☕ JDK 17 quraşdır
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Maven keşini aktiv et (sürətli build üçün)
       - name: 📦 Maven keşini aktiv et
         uses: actions/cache@v4
         with:
@@ -32,15 +29,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4. Testləri işə sal
       - name: 🚀 mvn test — testləri işə sal
         run: mvn test --batch-mode
+        working-directory: weather-ci-project
 
-      # 5. Test hesabatını artifact kimi saxla
       - name: 📊 Test hesabatını saxla
         uses: actions/upload-artifact@v4
-        if: always()   # test uğursuz olsa belə saxla
+        if: always()
         with:
           name: test-hesabati-${{ github.run_number }}
-          path: target/surefire-reports/
+          path: weather-ci-project/target/surefire-reports/
           retention-days: 14
