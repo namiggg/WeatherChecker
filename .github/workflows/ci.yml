@@ -21,22 +21,23 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: 📦 Maven keşini aktiv et
+      - name: 📦 Gradle keşini aktiv et
         uses: actions/cache@v4
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
-            ${{ runner.os }}-maven-
+            ${{ runner.os }}-gradle-
 
-      - name: 🚀 mvn test — testləri işə sal
-        run: mvn test --batch-mode
-        working-directory: weather-ci-project
+      - name: 🚀 Testləri işə sal
+        run: ./gradlew test
 
       - name: 📊 Test hesabatını saxla
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-hesabati-${{ github.run_number }}
-          path: weather-ci-project/target/surefire-reports/
+          path: build/reports/tests/
           retention-days: 14
